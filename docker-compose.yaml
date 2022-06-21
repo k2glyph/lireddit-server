@@ -1,0 +1,29 @@
+version: '3.1'
+
+services:
+  cache:
+    image: redis:6.2-alpine
+    restart: always
+    ports:
+      - '6379:6379'
+    command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+    volumes: 
+      - cache:/data
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: lireddit
+      POSTGRES_DATABASE: lireddit
+      POSTGRES_USER: lireddit
+    ports:
+      - 5432:5432
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+volumes:
+  cache:
+    driver: local
